@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Java Programming Test: Beginner Level</title>
+<style>
+:root{
+  --ink:#1b2130;
+  --muted:#586173;
+  --rule:#c5ccd9;
+  --accent:#1565C0;
+  --code-bg:#f1f4f9;
+  --page:#e6eaf1;
+  --ok:#1b6b3a;
+  --ok-bg:#eaf6ee;
+  --sans:"Segoe UI",Arial,Helvetica,sans-serif;
+  --mono:Consolas,"Courier New",monospace;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;padding:28px 12px;background:var(--page);color:var(--ink);
+  font-family:Georgia,"Times New Roman",serif;font-size:16px;line-height:1.6;
+}
+.paper{
+  max-width:840px;margin:0 auto;background:#fff;
+  padding:44px 52px 52px;box-shadow:0 2px 16px rgba(20,30,50,.16);
+}
+
+/* ---------- header ---------- */
+.head{
+  display:flex;justify-content:space-between;align-items:flex-end;gap:24px;
+  border-bottom:3px solid var(--accent);padding-bottom:14px;
+}
+h1{margin:0;font-size:30px;line-height:1.15;letter-spacing:-.01em}
+.sub{margin:6px 0 0;color:var(--muted);font-size:15px}
+.facts{display:flex;gap:26px;margin:0;font-family:var(--sans)}
+.facts div{text-align:right}
+.facts dt{font-size:12px;color:var(--muted)}
+.facts dd{margin:0;font-size:21px;font-weight:700;color:var(--accent);white-space:nowrap}
+
+.student{
+  display:grid;grid-template-columns:1fr 1fr;gap:16px 32px;
+  margin:24px 0 8px;font-family:var(--sans);font-size:14px;
+}
+.field{display:flex;align-items:flex-end;gap:8px}
+.field span{white-space:nowrap;color:var(--muted)}
+.field i{flex:1;border-bottom:1px solid var(--ink);height:1.5em}
+
+.plan{
+  width:100%;border-collapse:collapse;margin:20px 0 0;
+  font-family:var(--sans);font-size:14px;
+}
+.plan th,.plan td{border:1px solid var(--rule);padding:6px 12px;text-align:left}
+.plan th{background:var(--code-bg);font-weight:600}
+.plan td.num,.plan th.num{text-align:right}
+
+.rules{
+  margin:18px 0 0;padding:12px 18px;background:var(--code-bg);
+  border-left:4px solid var(--accent);font-family:var(--sans);font-size:14px;
+}
+.rules p{margin:0 0 4px;font-weight:600}
+.rules ul{margin:0;padding-left:18px}
+.rules li{margin:2px 0}
+
+.banner{
+  margin:20px 0 0;padding:10px 16px;background:var(--ok-bg);
+  border-left:4px solid var(--ok);font-family:var(--sans);font-size:14px;
+}
+
+/* ---------- sections ---------- */
+.sec{margin-top:38px}
+.sec-head{
+  display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+  border-bottom:2px solid var(--ink);padding-bottom:6px;break-after:avoid;
+}
+.sec-head h2{margin:0;font-size:21px}
+.sec-head .tot{font-family:var(--sans);font-size:14px;color:var(--muted);white-space:nowrap}
+.sec-note{margin:8px 0 18px;color:var(--muted);font-size:14.5px;font-family:var(--sans)}
+
+/* ---------- questions ---------- */
+.q{
+  display:grid;grid-template-columns:2.3rem 1fr auto;
+  margin:0 0 24px;break-inside:avoid;
+}
+.q .n{font-weight:700;color:var(--accent);font-family:var(--sans)}
+.q .m{
+  font-family:var(--sans);font-size:13px;color:var(--muted);
+  white-space:nowrap;padding-left:12px;padding-top:2px;
+}
+.q .body{grid-column:2 / -1;margin-top:10px}
+
+pre{
+  margin:0;padding:12px 14px;background:var(--code-bg);
+  border:1px solid var(--rule);border-radius:4px;
+  font-family:var(--mono);font-size:14px;line-height:1.5;overflow-x:auto;tab-size:4;
+}
+code{
+  font-family:var(--mono);font-size:.92em;background:var(--code-bg);
+  padding:1px 5px;border-radius:3px;
+}
+pre code{background:none;padding:0;font-size:inherit}
+
+/* answer space (test paper) */
+.lines{
+  --n:2;height:calc(var(--n) * 2rem);
+  background-image:repeating-linear-gradient(
+    to bottom,transparent 0,transparent calc(2rem - 1px),
+    var(--rule) calc(2rem - 1px),var(--rule) 2rem);
+}
+.codebox{
+  --n:9;position:relative;height:calc(var(--n) * 1.5rem);
+  border:1.5px solid var(--rule);border-radius:4px;
+}
+.codebox::before{
+  content:"Write your code here";position:absolute;top:6px;left:10px;
+  font:12px var(--sans);color:#9aa3b2;
+}
+.split{display:grid;grid-template-columns:1.35fr 1fr;gap:16px;align-items:stretch}
+.outbox{
+  border:1.5px solid var(--rule);border-radius:4px;min-height:8rem;
+  padding:8px 10px;font:12px var(--sans);color:#9aa3b2;
+}
+
+/* model answers (answer key) */
+.ans{
+  grid-column:2 / -1;margin-top:10px;padding:10px 14px;background:var(--ok-bg);
+  border-left:4px solid var(--ok);font-size:15px;
+}
+.ans p{margin:0 0 6px}
+.ans pre{background:#fff;margin:6px 0}
+.ans .mk{font-family:var(--sans);font-size:13px;color:var(--muted);margin:6px 0 0}
+.qtext{grid-column:2;}
+
+.end{
+  margin-top:36px;padding-top:12px;border-top:1px solid var(--rule);
+  text-align:center;color:var(--muted);font-family:var(--sans);font-size:14px;
+}
+
+/* ---------- small screens ---------- */
+@media (max-width:680px){
+  .paper{padding:26px 18px 34px}
+  .head{flex-direction:column;align-items:flex-start;gap:14px}
+  .facts div{text-align:left}
+  .student{grid-template-columns:1fr}
+  .split{grid-template-columns:1fr}
+  h1{font-size:25px}
+  .sec-head{flex-direction:column;gap:2px}
+}
+
+/* ---------- print ---------- */
+@page{size:A4;margin:14mm}
+@media print{
+  body{background:#fff;padding:0;font-size:12pt}
+  .paper{box-shadow:none;padding:0;max-width:none}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  pre{font-size:11pt}
+  .sec{break-before:auto}
+}
+</style>
+</head>
+<body>
+<main class="paper">
+
+<header class="head">
+  <div>
+    <h1>Java Programming Test</h1>
+    <p class="sub">Beginner level &mdash; basics, conditionals, Scanner input, loops, methods and arrays</p>
+  </div>
+  <dl class="facts">
+    <div><dt>Total marks</dt><dd>50</dd></div>
+    <div><dt>Time</dt><dd>60 min</dd></div>
+  </dl>
+</header>
+
+<div class="student">
+  <div class="field"><span>Name</span><i></i></div>
+  <div class="field"><span>Roll no.</span><i></i></div>
+  <div class="field"><span>Batch</span><i></i></div>
+  <div class="field"><span>Date</span><i></i></div>
+  <div></div>
+  <div class="field"><span>Marks obtained</span><i></i><span>/ 50</span></div>
+</div>
+
+<table class="plan">
+  <tr><th>Section</th><th>What you will do</th><th class="num">Questions</th><th class="num">Marks</th></tr>
+  <tr><td>A</td><td>Definitions and short theory</td><td class="num">10 &times; 2</td><td class="num">20</td></tr>
+  <tr><td>B</td><td>Write the code</td><td class="num">5 &times; 4</td><td class="num">20</td></tr>
+  <tr><td>C</td><td>Guess the output</td><td class="num">5 &times; 2</td><td class="num">10</td></tr>
+  <tr><th colspan="3">Total</th><th class="num">50</th></tr>
+</table>
+
+<div class="rules">
+  <p>Instructions</p>
+  <ul>
+    <li>Attempt all questions.</li>
+    <li>Write short, clear answers. One or two lines are enough in Section A.</li>
+    <li>In Section B, write neat code with proper brackets and semicolons.</li>
+    <li>Marks are given for correct logic, so a small spelling slip will not cost you the whole answer.</li>
+  </ul>
+</div>
+
+<section class="sec">
+  <div class="sec-head"><h2>Section A: Definitions</h2><span class="tot">10 questions &times; 2 marks = 20 marks</span></div>
+  <p class="sec-note">Answer each question in one to three lines.</p>
+  <div class="q"><span class="n">1.</span><span>What is a variable? Write one example of declaring a variable in Java.</span><span class="m">[2 marks]</span><div class="body"><div class="lines" style="--n:2"></div></div></div>
+  <div class="q"><span class="n">2.</span><span>What is a data type? Name any two data types in Java.</span><span class="m">[2 marks]</span><div class="body"><div class="lines" style="--n:2"></div></div></div>
+  <div class="q"><span class="n">3.</span><span>What is the difference between <code>=</code> and <code>==</code>?</span><span class="m">[2 marks]</span><div class="body"><div class="lines" style="--n:2"></div></div></div>
+  <div class="q"><span class="n">4.</span><span>What is a conditional statement? Name any two conditional statements in Java.</span><span class="m">[2 marks]</span><div class="body"><div class="lines" style="--n:2"></div></div></div>
+  <div class="q"><span class="n">5.</span><span>What is the <code>Scanner</code> class? Write the import statement needed to use it.</span><span class="m">[2 marks]</span><div class="body"><div class="lines" style="--n:2"></div></div></div>
+  <div class="q"><span class="n">6.</span><span>What is a method? Write one advantage of using methods.</span><span class="m">[2 marks]</span><div class="body"><div class="lines" style="--n:2"></div></div></div>
+  <div class="q"><span class="n">7.</span><span>What is the difference between a <b>parameter</b> and an <b>argument</b>?</span><span class="m">[2 marks]</span><div class="body"><div class="lines" style="--n:2"></div></div></div>
+  <div class="q"><span class="n">8.</span><span>What is a loop? Name any two types of loops in Java.</span><span class="m">[2 marks]</span><div class="body"><div class="lines" style="--n:2"></div></div></div>
+  <div class="q"><span class="n">9.</span><span>What is the difference between a <code>while</code> loop and a <code>do-while</code> loop?</span><span class="m">[2 marks]</span><div class="body"><div class="lines" style="--n:2"></div></div></div>
+  <div class="q"><span class="n">10.</span><span>What is an array? What is the index of the first element in an array?</span><span class="m">[2 marks]</span><div class="body"><div class="lines" style="--n:2"></div></div></div>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><h2>Section B: Write the Code</h2><span class="tot">5 questions &times; 4 marks = 20 marks</span></div>
+  <p class="sec-note">Question 1 needs a complete program. In Questions 2, 3 and 5 you may skip the
+  <code>class</code> and <code>main</code> lines and write only the code that goes inside <code>main</code>
+  (keep the <code>import</code> line in Question 2). In Question 4, write the method and the <code>main</code> method.</p>
+  <div class="q"><span class="n">1.</span><span>Write a <b>complete Java program</b> that prints your name on one line and your city on the next line.</span><span class="m">[4 marks]</span><div class="body"><div class="codebox" style="--n:10"></div></div></div>
+  <div class="q"><span class="n">2.</span><span>Ask the user to enter their age using <code>Scanner</code>. If the age is 18 or more, print <code>Eligible to vote</code>. Otherwise, print <code>Not eligible to vote</code>.</span><span class="m">[4 marks]</span><div class="body"><div class="codebox" style="--n:12"></div></div></div>
+  <div class="q"><span class="n">3.</span><span>Using a <code>for</code> loop, find the sum of the numbers from 1 to 10 and print it.</span><span class="m">[4 marks]</span><div class="body"><div class="codebox" style="--n:9"></div></div></div>
+  <div class="q"><span class="n">4.</span><span>Write a method named <code>square</code> that takes one <code>int</code> and returns its square. Then call it from <code>main</code> with the value 6 and print the result.</span><span class="m">[4 marks]</span><div class="body"><div class="codebox" style="--n:12"></div></div></div>
+  <div class="q"><span class="n">5.</span><span>Create an <code>int</code> array named <code>marks</code> with the values 60, 70, 80, 90, 100. Use a loop to add all the elements and print the sum.</span><span class="m">[4 marks]</span><div class="body"><div class="codebox" style="--n:9"></div></div></div>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><h2>Section C: Guess the Output</h2><span class="tot">5 questions &times; 2 marks = 10 marks</span></div>
+  <p class="sec-note">Read each program carefully. Write exactly what it prints on the screen.
+  Every program runs without errors.</p>
+  <div class="q"><span class="n">1.</span><span>What is the output of this code?</span><span class="m">[2 marks]</span><div class="body"><div class="split"><pre><code>int a = 10;
+int b = 3;
+System.out.println(a + b);
+System.out.println(a / b);
+System.out.println(a % b);</code></pre><div class="outbox">Your output</div></div></div></div>
+  <div class="q"><span class="n">2.</span><span>What is the output of this code?</span><span class="m">[2 marks]</span><div class="body"><div class="split"><pre><code>int marks = 62;
+
+if (marks &gt;= 75) {
+    System.out.println("Grade A");
+} else if (marks &gt;= 60) {
+    System.out.println("Grade B");
+} else {
+    System.out.println("Grade C");
+}</code></pre><div class="outbox">Your output</div></div></div></div>
+  <div class="q"><span class="n">3.</span><span>What is the output of this code?</span><span class="m">[2 marks]</span><div class="body"><div class="split"><pre><code>for (int i = 1; i &lt;= 5; i++) {
+    if (i == 3) {
+        continue;
+    }
+    System.out.print(i + " ");
+}</code></pre><div class="outbox">Your output</div></div></div></div>
+  <div class="q"><span class="n">4.</span><span>What is the output of this code?</span><span class="m">[2 marks]</span><div class="body"><div class="split"><pre><code>static int add(int a, int b) {
+    return a + b;
+}
+
+public static void main(String[] args) {
+    int x = add(4, 6);
+    System.out.println("Sum = " + x);
+    System.out.println(add(x, 5));
+}</code></pre><div class="outbox">Your output</div></div></div></div>
+  <div class="q"><span class="n">5.</span><span>What is the output of this code?</span><span class="m">[2 marks]</span><div class="body"><div class="split"><pre><code>int[] nums = {5, 10, 15, 20};
+
+System.out.println(nums[1]);
+System.out.println(nums.length);
+nums[2] = 50;
+System.out.println(nums[2] + nums[3]);</code></pre><div class="outbox">Your output</div></div></div></div>
+</section>
+<p class="end">End of paper. Check your answers before you submit.</p>
+</main>
+</body>
+</html>

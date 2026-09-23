@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Python Fundamentals — Unit Test (50 Marks)</title>
+<style>
+  :root{
+    --bg:#0f1117; --panel:#161925; --panel-2:#1c2030; --border:#2a2f42;
+    --text:#e7e9ee; --muted:#9aa1b4; --accent:#5b8cff; --accent-2:#7ee3c2;
+    --warn:#ffb15c; --code-bg:#11141d; --radius:10px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background:var(--bg); color:var(--text); line-height:1.6;
+  }
+  .sheet{ max-width:860px; margin:0 auto; padding:40px 28px 80px; }
+  header.testhead{
+    text-align:center; border-bottom:2px solid var(--border);
+    padding-bottom:20px; margin-bottom:28px;
+  }
+  header.testhead h1{
+    font-size:26px; margin:0 0 6px;
+    background:linear-gradient(90deg,var(--accent),var(--accent-2));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  header.testhead .sub{ color:var(--muted); font-size:14px; margin:2px 0; }
+  .meta-row{
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+    margin-top:18px; font-size:14px; color:var(--text);
+  }
+  .meta-row div{
+    background:var(--panel); border:1px solid var(--border); border-radius:8px;
+    padding:8px 16px; flex:1; min-width:160px;
+  }
+  .meta-row span{ color:var(--muted); display:block; font-size:11px; text-transform:uppercase; letter-spacing:.05em; margin-bottom:2px; }
+  .instructions{
+    background:var(--panel-2); border:1px solid var(--border); border-left:4px solid var(--accent);
+    border-radius:8px; padding:14px 18px; margin-bottom:32px; font-size:14px; color:#d4d7e0;
+  }
+  .instructions ul{ margin:6px 0 0; padding-left:20px; }
+  .instructions li{ margin-bottom:4px; }
+
+  section.part{ margin-bottom:42px; }
+  .part-head{
+    display:flex; justify-content:space-between; align-items:baseline;
+    border-bottom:1px solid var(--border); padding-bottom:8px; margin-bottom:20px;
+  }
+  .part-head h2{ font-size:19px; margin:0; color:var(--text); }
+  .part-head .marks-tag{
+    font-size:12.5px; color:var(--accent-2); background:rgba(126,224,193,.08);
+    border:1px solid rgba(126,224,193,.3); padding:4px 10px; border-radius:20px;
+    white-space:nowrap;
+  }
+
+  .q{
+    background:var(--panel); border:1px solid var(--border); border-radius:var(--radius);
+    padding:16px 20px; margin-bottom:14px;
+  }
+  .q-top{ display:flex; justify-content:space-between; gap:10px; align-items:baseline; }
+  .q-num{ font-weight:600; color:var(--text); }
+  .q-marks{ font-size:12px; color:var(--muted); white-space:nowrap; }
+  .q-text{ margin:8px 0 0; color:#d4d7e0; font-size:14.5px; }
+
+  .options{ list-style:none; margin:12px 0 0; padding:0; display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  @media (max-width:560px){ .options{ grid-template-columns:1fr; } }
+  .options li{
+    background:var(--panel-2); border:1px solid var(--border); border-radius:6px;
+    padding:8px 12px; font-size:14px; color:#d4d7e0; display:flex; gap:8px;
+  }
+  .options li b{ color:var(--accent-2); flex-shrink:0; }
+
+  .answer-lines{ margin-top:12px; }
+
+  .code-block{
+    background:var(--code-bg); border:1px solid var(--border); border-radius:var(--radius);
+    margin:12px 0 4px; overflow:hidden;
+  }
+  .code-block .code-label{
+    background:var(--panel-2); padding:6px 14px; font-size:11px; color:var(--muted);
+    letter-spacing:.5px; text-transform:uppercase; border-bottom:1px solid var(--border);
+  }
+  .code-block pre{ margin:0; padding:14px 16px; overflow-x:auto; font-family:'Consolas','Courier New',monospace; font-size:13.3px; line-height:1.6; color:#d6dae5; }
+
+  .box{
+    border:1px dashed var(--border); border-radius:8px; min-height:90px;
+    background:var(--code-bg); margin-top:10px;
+  }
+  .output-box{ min-height:50px; }
+
+  footer.endnote{ text-align:center; color:var(--muted); font-size:13px; margin-top:40px; border-top:1px solid var(--border); padding-top:16px; }
+
+  @media print{
+    body{ background:#fff; color:#111; }
+    .sheet{ max-width:100%; }
+    .q, .instructions, .meta-row div, .code-block{ background:#fafafa; border-color:#ccc; }
+    header.testhead h1{ -webkit-text-fill-color:#111; background:none; color:#111; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header class="testhead">
+    <h1>Python Fundamentals — Unit Test</h1>
+    <p class="sub">Covers: Basics &amp; Data Types · Operators · Conditional Statements · Loops · Nested Loops &amp; Patterns · Functions</p>
+    <div class="meta-row">
+      <div><span>Name</span>____________________</div>
+      <div><span>Roll No.</span>____________________</div>
+      <div><span>Date</span>____________________</div>
+      <div><span>Max Marks</span>50</div>
+      <div><span>Time</span>90 minutes</div>
+    </div>
+  </header>
+
+  <div class="instructions">
+    <b>Instructions</b>
+    <ul>
+      <li>All questions are compulsory unless stated otherwise.</li>
+      <li>Write your code answers in standard Python 3 syntax.</li>
+      <li>For "guess the output" questions, write the <i>exact</i> output as it would print on screen, including spacing and line breaks.</li>
+      <li>No marks for illegible or ambiguous handwriting in code sections.</li>
+    </ul>
+  </div>
+
+  <!-- ================= PART A: MCQs ================= -->
+  <section class="part">
+    <div class="part-head">
+      <h2>Part A — Multiple Choice Questions</h2>
+      <span class="marks-tag">10 × 1 = 10 marks</span>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">1.</span><span class="q-marks">1 mark</span></div>
+      <p class="q-text">What is the result of <code>17 % 4</code> in Python?</p>
+      <ul class="options">
+        <li><b>A.</b> 4</li>
+        <li><b>B.</b> 1</li>
+        <li><b>C.</b> 4.25</li>
+        <li><b>D.</b> 0</li>
+      </ul>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">2.</span><span class="q-marks">1 mark</span></div>
+      <p class="q-text">Which of these is a <b>logical operator</b> in Python?</p>
+      <ul class="options">
+        <li><b>A.</b> &amp;&amp;</li>
+        <li><b>B.</b> ||</li>
+        <li><b>C.</b> and</li>
+        <li><b>D.</b> !</li>
+      </ul>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">3.</span><span class="q-marks">1 mark</span></div>
+      <p class="q-text">What does the expression <code>10 == 10.0</code> evaluate to?</p>
+      <ul class="options">
+        <li><b>A.</b> True</li>
+        <li><b>B.</b> False</li>
+        <li><b>C.</b> Error</li>
+        <li><b>D.</b> None</li>
+      </ul>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">4.</span><span class="q-marks">1 mark</span></div>
+      <p class="q-text">Which keyword is used to define a function in Python?</p>
+      <ul class="options">
+        <li><b>A.</b> function</li>
+        <li><b>B.</b> def</li>
+        <li><b>C.</b> func</li>
+        <li><b>D.</b> lambda</li>
+      </ul>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">5.</span><span class="q-marks">1 mark</span></div>
+      <p class="q-text">In <code>def greet(name="Guest"):</code>, what kind of argument is <code>name</code>?</p>
+      <ul class="options">
+        <li><b>A.</b> Positional argument</li>
+        <li><b>B.</b> Default argument</li>
+        <li><b>C.</b> Keyword-only argument</li>
+        <li><b>D.</b> *args</li>
+      </ul>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">6.</span><span class="q-marks">1 mark</span></div>
+      <p class="q-text">What does <code>*args</code> allow a function to accept?</p>
+      <ul class="options">
+        <li><b>A.</b> A fixed number of keyword arguments only</li>
+        <li><b>B.</b> Any number of positional arguments, collected as a tuple</li>
+        <li><b>C.</b> Only one argument</li>
+        <li><b>D.</b> A dictionary of arguments</li>
+      </ul>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">7.</span><span class="q-marks">1 mark</span></div>
+      <p class="q-text">Which statement about a variable declared inside a function (local scope) is true?</p>
+      <ul class="options">
+        <li><b>A.</b> It can be accessed outside the function directly</li>
+        <li><b>B.</b> It only exists while the function is running</li>
+        <li><b>C.</b> It automatically becomes a global variable</li>
+        <li><b>D.</b> It must be declared with the <code>global</code> keyword</li>
+      </ul>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">8.</span><span class="q-marks">1 mark</span></div>
+      <p class="q-text">Which of these is a valid <b>lambda</b> function that returns the square of x?</p>
+      <ul class="options">
+        <li><b>A.</b> <code>lambda x: x ** 2</code></li>
+        <li><b>B.</b> <code>lambda(x) = x ** 2</code></li>
+        <li><b>C.</b> <code>def lambda x: x ** 2</code></li>
+        <li><b>D.</b> <code>lambda x -> x ** 2</code></li>
+      </ul>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">9.</span><span class="q-marks">1 mark</span></div>
+      <p class="q-text">Which built-in function applies a given function to every item of an iterable?</p>
+      <ul class="options">
+        <li><b>A.</b> filter()</li>
+        <li><b>B.</b> map()</li>
+        <li><b>C.</b> reduce()</li>
+        <li><b>D.</b> zip()</li>
+      </ul>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">10.</span><span class="q-marks">1 mark</span></div>
+      <p class="q-text">What is a function that calls itself, directly or indirectly, called?</p>
+      <ul class="options">
+        <li><b>A.</b> Iteration</li>
+        <li><b>B.</b> Recursion</li>
+        <li><b>C.</b> Higher-order function</li>
+        <li><b>D.</b> Nested loop</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= PART B: Definitions ================= -->
+  <section class="part">
+    <div class="part-head">
+      <h2>Part B — Definitions / Short Answer</h2>
+      <span class="marks-tag">5 × 2 = 10 marks</span>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">11.</span><span class="q-marks">2 marks</span></div>
+      <p class="q-text">What is the difference between <b>arithmetic operators</b> and <b>comparison operators</b>? Give one example of each.</p>
+      <div class="box answer-lines"></div>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">12.</span><span class="q-marks">2 marks</span></div>
+      <p class="q-text">Differentiate between <b>parameters</b> and <b>arguments</b> in a function.</p>
+      <div class="box answer-lines"></div>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">13.</span><span class="q-marks">2 marks</span></div>
+      <p class="q-text">What is the difference between <b>local scope</b> and <b>global scope</b> of a variable?</p>
+      <div class="box answer-lines"></div>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">14.</span><span class="q-marks">2 marks</span></div>
+      <p class="q-text">What is a <b>higher-order function</b>? Name one built-in Python function that qualifies as one.</p>
+      <div class="box answer-lines"></div>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">15.</span><span class="q-marks">2 marks</span></div>
+      <p class="q-text">What is the difference between <code>*args</code> and <code>**kwargs</code> in a function definition?</p>
+      <div class="box answer-lines"></div>
+    </div>
+  </section>
+
+  <!-- ================= PART C: Write Code ================= -->
+  <section class="part">
+    <div class="part-head">
+      <h2>Part C — Write the Code</h2>
+      <span class="marks-tag">5 × 3 = 15 marks</span>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">16.</span><span class="q-marks">3 marks</span></div>
+      <p class="q-text">Write a Python program to check whether a given number is positive, negative, or zero using <code>if...elif...else</code>.</p>
+      <div class="box" style="min-height:120px;"></div>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">17.</span><span class="q-marks">3 marks</span></div>
+      <p class="q-text">Write a Python function <code>is_prime(n)</code> that returns <code>True</code> if <code>n</code> is a prime number and <code>False</code> otherwise. Use a loop inside the function.</p>
+      <div class="box" style="min-height:130px;"></div>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">18.</span><span class="q-marks">3 marks</span></div>
+      <p class="q-text">Write a Python function <code>factorial(n)</code> that calculates the factorial of <code>n</code> using <b>recursion</b>.</p>
+      <div class="box" style="min-height:120px;"></div>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">19.</span><span class="q-marks">3 marks</span></div>
+      <p class="q-text">Write a Python function <code>add_all(*args)</code> that accepts any number of numeric arguments and returns their sum.</p>
+      <div class="box" style="min-height:120px;"></div>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">20.</span><span class="q-marks">3 marks</span></div>
+      <p class="q-text">Write a Python program using nested loops to print the following number pattern for <code>n = 4</code> rows:</p>
+      <div class="code-block">
+        <div class="code-label">Expected Output</div>
+        <pre>1
+1 2
+1 2 3
+1 2 3 4</pre>
+      </div>
+      <div class="box" style="min-height:120px;"></div>
+    </div>
+  </section>
+
+  <!-- ================= PART D: Guess the Output ================= -->
+  <section class="part">
+    <div class="part-head">
+      <h2>Part D — Guess the Output</h2>
+      <span class="marks-tag">5 × 3 = 15 marks</span>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">21.</span><span class="q-marks">3 marks</span></div>
+      <p class="q-text">What will be the output of the following code?</p>
+      <div class="code-block">
+        <div class="code-label">Code</div>
+        <pre>a = 6
+b = 4
+print(a > b and b > 0)
+print(a < b or b > 0)
+print(not(a == b))</pre>
+      </div>
+      <div class="box output-box"></div>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">22.</span><span class="q-marks">3 marks</span></div>
+      <p class="q-text">What will be the output of the following code?</p>
+      <div class="code-block">
+        <div class="code-label">Code</div>
+        <pre>def greet(name, msg="Good morning"):
+    print(msg, name)
+
+greet("Riya")
+greet("Aman", "Good evening")</pre>
+      </div>
+      <div class="box output-box"></div>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">23.</span><span class="q-marks">3 marks</span></div>
+      <p class="q-text">What will be the output of the following code?</p>
+      <div class="code-block">
+        <div class="code-label">Code</div>
+        <pre>x = 10
+
+def change():
+    x = 5
+    print("Inside:", x)
+
+change()
+print("Outside:", x)</pre>
+      </div>
+      <div class="box output-box"></div>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">24.</span><span class="q-marks">3 marks</span></div>
+      <p class="q-text">What will be the output of the following code?</p>
+      <div class="code-block">
+        <div class="code-label">Code</div>
+        <pre>nums = [1, 2, 3, 4, 5, 6]
+even = list(filter(lambda x: x % 2 == 0, nums))
+print(even)</pre>
+      </div>
+      <div class="box output-box"></div>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">25.</span><span class="q-marks">3 marks</span></div>
+      <p class="q-text">What will be the output of the following code?</p>
+      <div class="code-block">
+        <div class="code-label">Code</div>
+        <pre>def multiply(a, b=2, c=3):
+    return a * b * c
+
+print(multiply(2))
+print(multiply(2, c=1))</pre>
+      </div>
+      <div class="box output-box"></div>
+    </div>
+  </section>
+
+  <footer class="endnote">— End of Test — Total: 50 Marks —</footer>
+
+</div>
+</body>
+</html>

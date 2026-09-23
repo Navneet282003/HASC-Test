@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Python Fundamentals — Unit Test (50 Marks)</title>
+<style>
+  :root{
+    --bg:#0f1117; --panel:#161925; --panel-2:#1c2030; --border:#2a2f42;
+    --text:#e7e9ee; --muted:#9aa1b4; --accent:#5b8cff; --accent-2:#7ee3c2;
+    --warn:#ffb15c; --code-bg:#11141d; --radius:10px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background:var(--bg); color:var(--text); line-height:1.6;
+  }
+  .sheet{ max-width:860px; margin:0 auto; padding:40px 28px 80px; }
+  header.testhead{
+    text-align:center; border-bottom:2px solid var(--border);
+    padding-bottom:20px; margin-bottom:28px;
+  }
+  header.testhead h1{
+    font-size:26px; margin:0 0 6px;
+    background:linear-gradient(90deg,var(--accent),var(--accent-2));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  header.testhead .sub{ color:var(--muted); font-size:14px; margin:2px 0; }
+  .meta-row{
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+    margin-top:18px; font-size:14px; color:var(--text);
+  }
+  .meta-row div{
+    background:var(--panel); border:1px solid var(--border); border-radius:8px;
+    padding:8px 16px; flex:1; min-width:160px;
+  }
+  .meta-row span{ color:var(--muted); display:block; font-size:11px; text-transform:uppercase; letter-spacing:.05em; margin-bottom:2px; }
+  .instructions{
+    background:var(--panel-2); border:1px solid var(--border); border-left:4px solid var(--accent);
+    border-radius:8px; padding:14px 18px; margin-bottom:32px; font-size:14px; color:#d4d7e0;
+  }
+  .instructions ul{ margin:6px 0 0; padding-left:20px; }
+  .instructions li{ margin-bottom:4px; }
+
+  section.part{ margin-bottom:42px; }
+  .part-head{
+    display:flex; justify-content:space-between; align-items:baseline;
+    border-bottom:1px solid var(--border); padding-bottom:8px; margin-bottom:20px;
+  }
+  .part-head h2{ font-size:19px; margin:0; color:var(--text); }
+  .part-head .marks-tag{
+    font-size:12.5px; color:var(--accent-2); background:rgba(126,224,193,.08);
+    border:1px solid rgba(126,224,193,.3); padding:4px 10px; border-radius:20px;
+    white-space:nowrap;
+  }
+
+  .q{
+    background:var(--panel); border:1px solid var(--border); border-radius:var(--radius);
+    padding:16px 20px; margin-bottom:14px;
+  }
+  .q-top{ display:flex; justify-content:space-between; gap:10px; align-items:baseline; }
+  .q-num{ font-weight:600; color:var(--text); }
+  .q-marks{ font-size:12px; color:var(--muted); white-space:nowrap; }
+  .q-text{ margin:8px 0 0; color:#d4d7e0; font-size:14.5px; }
+
+  .options{ list-style:none; margin:12px 0 0; padding:0; display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  @media (max-width:560px){ .options{ grid-template-columns:1fr; } }
+  .options li{
+    background:var(--panel-2); border:1px solid var(--border); border-radius:6px;
+    padding:8px 12px; font-size:14px; color:#d4d7e0; display:flex; gap:8px;
+  }
+  .options li b{ color:var(--accent-2); flex-shrink:0; }
+
+  .answer-lines{ margin-top:12px; }
+  .line{ border-bottom:1px dashed var(--border); height:26px; }
+
+  .code-block{
+    background:var(--code-bg); border:1px solid var(--border); border-radius:var(--radius);
+    margin:12px 0 4px; overflow:hidden;
+  }
+  .code-block .code-label{
+    background:var(--panel-2); padding:6px 14px; font-size:11px; color:var(--muted);
+    letter-spacing:.5px; text-transform:uppercase; border-bottom:1px solid var(--border);
+  }
+  .code-block pre{ margin:0; padding:14px 16px; overflow-x:auto; font-family:'Consolas','Courier New',monospace; font-size:13.3px; line-height:1.6; color:#d6dae5; }
+  .kw{color:#c586c0;} .fn{color:#dcdcaa;} .str{color:#ce9178;} .num{color:#b5cea8;} .cmt{color:#6b7089;font-style:italic;}
+
+  .box{
+    border:1px dashed var(--border); border-radius:8px; min-height:90px;
+    background:var(--code-bg); margin-top:10px;
+  }
+  .output-box{ min-height:50px; }
+
+  footer.endnote{ text-align:center; color:var(--muted); font-size:13px; margin-top:40px; border-top:1px solid var(--border); padding-top:16px; }
+
+  .toggle-btn{
+    display:block; margin:36px auto 0; background:var(--panel); color:var(--accent-2);
+    border:1px solid var(--accent-2); border-radius:8px; padding:10px 20px; font-size:14px;
+    cursor:pointer;
+  }
+  .toggle-btn:hover{ background:var(--panel-2); }
+
+  #answerkey{ display:none; margin-top:24px; }
+  #answerkey.show{ display:block; }
+  .ak-head{
+    text-align:center; font-size:20px; color:var(--warn); margin-bottom:20px;
+    border-bottom:2px solid var(--border); padding-bottom:12px;
+  }
+  .ak-item{
+    background:var(--panel); border:1px solid var(--border); border-left:4px solid var(--accent-2);
+    border-radius:8px; padding:12px 18px; margin-bottom:10px; font-size:14px;
+  }
+  .ak-item b{ color:var(--accent-2); }
+  .ak-item pre{ background:var(--code-bg); border:1px solid var(--border); border-radius:6px; padding:10px 14px; margin:8px 0 0; overflow-x:auto; font-size:13px; color:#d6dae5; }
+
+  @media print{
+    body{ background:#fff; color:#111; }
+    .sheet{ max-width:100%; }
+    .q, .instructions, .meta-row div, .code-block, .ak-item{ background:#fafafa; border-color:#ccc; }
+    .toggle-btn{ display:none; }
+    #answerkey{ display:none !important; }
+    header.testhead h1{ -webkit-text-fill-color:#111; background:none; color:#111; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header class="testhead">
+    <h1>Python Fundamentals — Unit Test</h1>
+    <p class="sub">Covers: Basics &amp; Data Types · Variables &amp; Operators · Conditional Statements · Loops · Nested Loops &amp; Patterns</p>
+    <div class="meta-row">
+      <div><span>Name</span>____________________</div>
+      <div><span>Roll No.</span>____________________</div>
+      <div><span>Date</span>____________________</div>
+      <div><span>Max Marks</span>50</div>
+      <div><span>Time</span>90 minutes</div>
+    </div>
+  </header>
+
+  <div class="instructions">
+    <b>Instructions</b>
+    <ul>
+      <li>All questions are compulsory unless stated otherwise.</li>
+      <li>Write your code answers in standard Python 3 syntax.</li>
+      <li>For "guess the output" questions, write the <i>exact</i> output as it would print on screen, including spacing and line breaks.</li>
+      <li>No marks for illegible or ambiguous handwriting in code sections.</li>
+    </ul>
+  </div>
+
+  <!-- ================= PART A: MCQs ================= -->
+  <section class="part">
+    <div class="part-head">
+      <h2>Part A — Multiple Choice Questions</h2>
+      <span class="marks-tag">10 × 1 = 10 marks</span>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">1.</span><span class="q-marks">1 mark</span></div>
+      <p class="q-text">Which of the following is a valid identifier in Python?</p>
+      <ul class="options">
+        <li><b>A.</b> 2value</li>
+        <li><b>B.</b> _value2</li>
+        <li><b>C.</b> value-2</li>
+        <li><b>D.</b> value 2</li>
+      </ul>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">2.</span><span class="q-marks">1 mark</span></div>
+      <p class="q-text">What is the data type of the value returned by <code>input()</code> in Python, by default?</p>
+      <ul class="options">
+        <li><b>A.</b> int</li>
+        <li><b>B.</b> float</li>
+        <li><b>C.</b> str</li>
+        <li><b>D.</b> bool</li>
+      </ul>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">3.</span><span class="q-marks">1 mark</span></div>
+      <p class="q-text">Which operator is used for floor (integer) division in Python?</p>
+      <ul class="options">
+        <li><b>A.</b> /</li>
+        <li><b>B.</b> //</li>
+        <li><b>C.</b> %</li>
+        <li><b>D.</b> **</li>
+      </ul>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">4.</span><span class="q-marks">1 mark</span></div>
+      <p class="q-text">Which of these is a case of automatic <b>type conversion</b> (not type casting)?</p>
+      <ul class="options">
+        <li><b>A.</b> <code>int("5")</code></li>
+        <li><b>B.</b> <code>5 + 2.0</code> becoming <code>7.0</code></li>
+        <li><b>C.</b> <code>str(5)</code></li>
+        <li><b>D.</b> <code>float("5")</code></li>
+      </ul>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">5.</span><span class="q-marks">1 mark</span></div>
+      <p class="q-text">Which data type is immutable?</p>
+      <ul class="options">
+        <li><b>A.</b> list</li>
+        <li><b>B.</b> dict</li>
+        <li><b>C.</b> tuple</li>
+        <li><b>D.</b> set</li>
+      </ul>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">6.</span><span class="q-marks">1 mark</span></div>
+      <p class="q-text">Which statement correctly checks multiple conditions where <b>both</b> must be true?</p>
+      <ul class="options">
+        <li><b>A.</b> <code>if a &gt; 0 or b &gt; 0:</code></li>
+        <li><b>B.</b> <code>if a &gt; 0 and b &gt; 0:</code></li>
+        <li><b>C.</b> <code>if a &gt; 0, b &gt; 0:</code></li>
+        <li><b>D.</b> <code>if not a &gt; 0:</code></li>
+      </ul>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">7.</span><span class="q-marks">1 mark</span></div>
+      <p class="q-text">What does <code>range(2, 10, 2)</code> generate?</p>
+      <ul class="options">
+        <li><b>A.</b> 2, 4, 6, 8</li>
+        <li><b>B.</b> 2, 4, 6, 8, 10</li>
+        <li><b>C.</b> 0, 2, 4, 6, 8</li>
+        <li><b>D.</b> 2, 3, 4, ..., 10</li>
+      </ul>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">8.</span><span class="q-marks">1 mark</span></div>
+      <p class="q-text">Which keyword immediately stops the current loop and exits it entirely?</p>
+      <ul class="options">
+        <li><b>A.</b> continue</li>
+        <li><b>B.</b> pass</li>
+        <li><b>C.</b> break</li>
+        <li><b>D.</b> return</li>
+      </ul>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">9.</span><span class="q-marks">1 mark</span></div>
+      <p class="q-text">In a nested loop used for pattern printing, what does the <b>inner</b> loop typically control?</p>
+      <ul class="options">
+        <li><b>A.</b> The number of rows</li>
+        <li><b>B.</b> The number of columns / characters printed per row</li>
+        <li><b>C.</b> The total number of patterns</li>
+        <li><b>D.</b> The indentation of the program</li>
+      </ul>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">10.</span><span class="q-marks">1 mark</span></div>
+      <p class="q-text">Which of the following collections does <b>not</b> allow duplicate values?</p>
+      <ul class="options">
+        <li><b>A.</b> list</li>
+        <li><b>B.</b> tuple</li>
+        <li><b>C.</b> set</li>
+        <li><b>D.</b> dict values</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= PART B: Definitions ================= -->
+  <section class="part">
+    <div class="part-head">
+      <h2>Part B — Definitions / Short Answer</h2>
+      <span class="marks-tag">5 × 2 = 10 marks</span>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">11.</span><span class="q-marks">2 marks</span></div>
+      <p class="q-text">Define <b>keywords</b> in Python and give two examples.</p>
+      <div class="box answer-lines"></div>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">12.</span><span class="q-marks">2 marks</span></div>
+      <p class="q-text">Differentiate between <b>type conversion</b> and <b>type casting</b>.</p>
+      <div class="box answer-lines"></div>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">13.</span><span class="q-marks">2 marks</span></div>
+      <p class="q-text">What is the difference between <code>break</code> and <code>continue</code> statements?</p>
+      <div class="box answer-lines"></div>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">14.</span><span class="q-marks">2 marks</span></div>
+      <p class="q-text">Define a <b>tuple</b> and explain why it is described as immutable.</p>
+      <div class="box answer-lines"></div>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">15.</span><span class="q-marks">2 marks</span></div>
+      <p class="q-text">What is a <b>nested loop</b>? Briefly describe how execution flows between the outer and inner loop.</p>
+      <div class="box answer-lines"></div>
+    </div>
+  </section>
+
+  <!-- ================= PART C: Write Code ================= -->
+  <section class="part">
+    <div class="part-head">
+      <h2>Part C — Write the Code</h2>
+      <span class="marks-tag">5 × 3 = 15 marks</span>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">16.</span><span class="q-marks">3 marks</span></div>
+      <p class="q-text">Write a Python program that takes a number as input from the user and prints whether it is <b>even</b> or <b>odd</b>.</p>
+      <div class="box" style="min-height:120px;"></div>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">17.</span><span class="q-marks">3 marks</span></div>
+      <p class="q-text">Write a Python program using <code>if...elif...else</code> to check whether a person is eligible to vote. (Eligible if age ≥ 18)</p>
+      <div class="box" style="min-height:120px;"></div>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">18.</span><span class="q-marks">3 marks</span></div>
+      <p class="q-text">Write a Python program using a <code>for</code> loop to print the first 10 natural numbers.</p>
+      <div class="box" style="min-height:120px;"></div>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">19.</span><span class="q-marks">3 marks</span></div>
+      <p class="q-text">Write a Python program using a <code>while</code> loop to calculate the sum of digits of a given number.</p>
+      <div class="box" style="min-height:130px;"></div>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">20.</span><span class="q-marks">3 marks</span></div>
+      <p class="q-text">Write a Python program using nested loops to print the following right-angled triangle pattern of stars for <code>n = 5</code> rows:</p>
+      <div class="code-block">
+        <div class="code-label">Expected Output</div>
+        <pre>*
+**
+***
+****
+*****</pre>
+      </div>
+      <div class="box" style="min-height:120px;"></div>
+    </div>
+  </section>
+
+  <!-- ================= PART D: Guess the Output ================= -->
+  <section class="part">
+    <div class="part-head">
+      <h2>Part D — Guess the Output</h2>
+      <span class="marks-tag">5 × 3 = 15 marks</span>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">21.</span><span class="q-marks">3 marks</span></div>
+      <p class="q-text">What will be the output of the following code?</p>
+      <div class="code-block">
+        <div class="code-label">Code</div>
+        <pre>a = 10
+b = 3
+print(a // b)
+print(a % b)
+print(a ** b)</pre>
+      </div>
+      <div class="box output-box"></div>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">22.</span><span class="q-marks">3 marks</span></div>
+      <p class="q-text">What will be the output of the following code?</p>
+      <div class="code-block">
+        <div class="code-label">Code</div>
+        <pre>x = 5
+if x > 10:
+    print("Big")
+elif x > 2:
+    print("Medium")
+else:
+    print("Small")</pre>
+      </div>
+      <div class="box output-box"></div>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">23.</span><span class="q-marks">3 marks</span></div>
+      <p class="q-text">What will be the output of the following code?</p>
+      <div class="code-block">
+        <div class="code-label">Code</div>
+        <pre>for i in range(1, 6):
+    if i == 4:
+        break
+    print(i)</pre>
+      </div>
+      <div class="box output-box"></div>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">24.</span><span class="q-marks">3 marks</span></div>
+      <p class="q-text">What will be the output of the following code?</p>
+      <div class="code-block">
+        <div class="code-label">Code</div>
+        <pre>fruits = ["apple", "banana", "cherry"]
+fruits.append("mango")
+fruits.remove("banana")
+print(fruits)
+print(len(fruits))</pre>
+      </div>
+      <div class="box output-box"></div>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-num">25.</span><span class="q-marks">3 marks</span></div>
+      <p class="q-text">What will be the output of the following code?</p>
+      <div class="code-block">
+        <div class="code-label">Code</div>
+        <pre>for i in range(1, 4):
+    for j in range(1, 3):
+        print(i, j)</pre>
+      </div>
+      <div class="box output-box"></div>
+    </div>
+  </section>
+
+  <footer class="endnote">— End of Test — Total: 50 Marks —</footer>
+
+</div>
+</body>
+</html>
